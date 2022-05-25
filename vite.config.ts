@@ -13,6 +13,7 @@ export default defineConfig({
     targets: [
       { src: 'node_modules/monaco-vim/dist/monaco-vim.js', dest: 'dist' },
     ],
+    hook: 'writeBundle',
   })],
   define: {
     __EXTENSION_VERSION__: JSON.stringify(process.env.npm_package_version),

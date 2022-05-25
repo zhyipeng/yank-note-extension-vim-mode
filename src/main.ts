@@ -1,4 +1,4 @@
-import { registerPlugin } from '@yank-note/runtime-api'
+import { getExtensionBasePath, registerPlugin } from '@yank-note/runtime-api'
 
 registerPlugin({
   name: __EXTENSION_ID__,
@@ -8,7 +8,7 @@ registerPlugin({
       // @ts-ignore
       require.config({
         paths: {
-          'monaco-vim': 'https://unpkg.com/monaco-vim/dist/monaco-vim',
+          'monaco-vim': getExtensionBasePath(__EXTENSION_ID__) + '/dist/monaco-vim.js',
         }
       })
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

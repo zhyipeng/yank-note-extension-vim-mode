@@ -1,5 +1,6 @@
 import * as path from 'path'
 import { defineConfig } from 'vite'
+import copy from 'rollup-plugin-copy'
 import vue from '@vitejs/plugin-vue'
 import { YN_LIBS, getExtensionBasePath } from '@yank-note/runtime-api'
 
@@ -8,7 +9,11 @@ const OUT_DIR = 'dist/'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: path.join(getExtensionBasePath(process.env.npm_package_name), OUT_DIR).replace(/\\/g, '/'),
-  plugins: [vue()],
+  plugins: [vue(), copy({
+    targets: [
+      { src: 'node_modules/monaco-vim/dist/monaco-vim.js', dest: 'dist' },
+    ],
+  })],
   define: {
     __EXTENSION_VERSION__: JSON.stringify(process.env.npm_package_version),
     __EXTENSION_ID__: JSON.stringify(process.env.npm_package_name),

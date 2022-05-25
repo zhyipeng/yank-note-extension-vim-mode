@@ -1,6 +1,6 @@
 {
   "name": "yank-note-extension-vim-mode",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "displayName": "Vim Mode",
   "description": "Vim Mode extension",
   "displayName_ZH-CN": "Vim Mode",

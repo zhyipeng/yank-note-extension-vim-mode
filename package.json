@@ -50,6 +50,12 @@
     "vue": "^3.2.33",
     "vue-tsc": "^0.34.11"
   },
-  "dependencies": {
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhyipeng/yank-note-extension-vim-mode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zhyipeng/yank-note-extension-vim-mode/issues"
   }
 }

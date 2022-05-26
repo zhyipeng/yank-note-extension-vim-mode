@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.1...v1.0.2) (2022-05-26)
+
+
+### Features
+
+* 状态栏支持 ([d677856](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/d6778564cf9d879032a4f3a51f1e27f757e1e673))
+
+
+
 ## [1.0.1](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.0...v1.0.1) (2022-05-25)
 - 修复打包丢失 js 文件问题
 

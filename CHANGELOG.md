@@ -1,3 +1,9 @@
+## [1.0.4](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.3...v1.0.4) (2022-08-16)
+* 增加开关快捷键
+* 优化菜单栏显示
+* 更新 Readme 文档
+
+
 ## [1.0.3](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.2...v1.0.3) (2022-08-16)
 * 增加开关, 默认开启: 工具-vim
 

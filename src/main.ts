@@ -3,29 +3,58 @@ import { getExtensionBasePath, registerPlugin } from '@yank-note/runtime-api'
 registerPlugin({
   name: __EXTENSION_ID__,
   register (ctx) {
-    ctx.editor.whenEditorReady().then((monaco) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      require.config({
-        paths: {
-          'monaco-vim': getExtensionBasePath(__EXTENSION_ID__) + '/dist/monaco-vim.js',
-        }
-      })
+    let openVim = !window.localStorage.getItem('closeVim')
+    let vimMode: any = null
 
-      // monaco-vim 状态栏要求直接使用 dom 操作更新状态
-      let statusBar: HTMLSpanElement
-      const docInfoEls = document.getElementsByClassName('document-info')
-      if (docInfoEls.length > 0) {
-        const docInfo = docInfoEls[0]
-        statusBar = document.createElement('span')
-        statusBar.style.marginRight = '5px'
-        docInfo.parentNode!.insertBefore(statusBar, docInfo)
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    require.config({
+      paths: {
+        'monaco-vim': getExtensionBasePath(__EXTENSION_ID__) + '/dist/monaco-vim.js',
       }
+    })
 
+    let statusBar: HTMLSpanElement
+    const docInfoEls = document.getElementsByClassName('document-info')
+    if (docInfoEls.length > 0) {
+      const docInfo = docInfoEls[0]
+      statusBar = document.createElement('span')
+      statusBar.style.marginRight = '5px'
+      statusBar.style.display = 'none'
+      docInfo.parentNode!.insertBefore(statusBar, docInfo)
+    }
+
+    const loadVimPlugin = () => {
+      statusBar.style.display = 'inline-block'
+      const editor = ctx.editor.getEditor()
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       require(['monaco-vim'], function (MonacoVim) {
-        MonacoVim.initVimMode(monaco.editor, statusBar)
+        vimMode = MonacoVim.initVimMode(editor, statusBar)
+      })
+    }
+
+    if (openVim) {
+      loadVimPlugin()
+    }
+
+    ctx.statusBar.tapMenus(menus => {
+      menus['status-bar-tool']?.list?.push({
+        id: __EXTENSION_ID__,
+        type: 'normal',
+        title: 'vim',
+        checked: openVim,
+        onClick: () => {
+          openVim = !openVim
+          ctx.statusBar.refreshMenu()
+          if (openVim) {
+            loadVimPlugin()
+            window.localStorage.removeItem('closeVim')
+          } else if (vimMode) {
+            vimMode.dispose()
+            window.localStorage.setItem('closeVim', '1')
+          }
+        }
       })
     })
   }

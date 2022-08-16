@@ -38,23 +38,33 @@ registerPlugin({
       loadVimPlugin()
     }
 
+    const actionName = 'toggleVim'
+
+    ctx.action.registerAction({
+      name: actionName,
+      keys: [ctx.command.CtrlCmd, ctx.command.Alt, 'v'],
+      handler: () => {
+        openVim = !openVim
+        ctx.statusBar.refreshMenu()
+        if (openVim) {
+          loadVimPlugin()
+          window.localStorage.removeItem('closeVim')
+        } else if (vimMode) {
+          vimMode.dispose()
+          window.localStorage.setItem('closeVim', '1')
+        }
+      },
+      when: () => ctx.store.state.showEditor
+    })
+
     ctx.statusBar.tapMenus(menus => {
       menus['status-bar-tool']?.list?.push({
         id: __EXTENSION_ID__,
         type: 'normal',
-        title: 'vim',
+        title: 'Vim 模式',
         checked: openVim,
-        onClick: () => {
-          openVim = !openVim
-          ctx.statusBar.refreshMenu()
-          if (openVim) {
-            loadVimPlugin()
-            window.localStorage.removeItem('closeVim')
-          } else if (vimMode) {
-            vimMode.dispose()
-            window.localStorage.setItem('closeVim', '1')
-          }
-        }
+        subTitle: ctx.command.getKeysLabel(actionName),
+        onClick: () => ctx.action.getActionHandler(actionName)()
       })
     })
   }

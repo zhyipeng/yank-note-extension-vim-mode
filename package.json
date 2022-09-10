@@ -13,7 +13,7 @@
   "icon": "./icon.png",
   "engines": {
     "node": ">=14.6.0",
-    "yank-note": "^3.29.0"
+    "yank-note": "^3.35.0"
   },
   "themes": [],
   "files": [
@@ -37,7 +37,7 @@
     "@vitejs/plugin-vue": "^2.3.2",
     "@vue/eslint-config-standard": "^6.1.0",
     "@vue/eslint-config-typescript": "^10.0.0",
-    "@yank-note/runtime-api": "^3.30.0",
+    "@yank-note/runtime-api": "^3.35.0",
     "conventional-changelog-cli": "^2.2.2",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.26.0",

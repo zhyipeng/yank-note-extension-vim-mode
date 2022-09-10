@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.4...v1.0.5) (2022-09-10)
+
+
+### Features
+
+* 适配 YankNote 3.35.0 版本 ([d7bbfba](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/d7bbfba53d44eb2706757d37e984f0c0cb123d6d))
+
+
+
 ## [1.0.4](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.3...v1.0.4) (2022-08-16)
 * 增加开关快捷键
 * 优化菜单栏显示

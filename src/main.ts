@@ -3,7 +3,7 @@ import { getExtensionBasePath, registerPlugin } from '@yank-note/runtime-api'
 registerPlugin({
   name: __EXTENSION_ID__,
   register (ctx) {
-    let openVim = !window.localStorage.getItem('closeVim')
+    const openVim = ctx.lib.vue.ref(!window.localStorage.getItem('closeVim'))
     let vimMode: any = null
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -14,45 +14,62 @@ registerPlugin({
       }
     })
 
-    let statusBar: HTMLSpanElement
-    const docInfoEls = document.getElementsByClassName('document-info')
-    if (docInfoEls.length > 0) {
-      const docInfo = docInfoEls[0]
-      statusBar = document.createElement('span')
-      statusBar.style.marginRight = '5px'
-      statusBar.style.display = 'none'
-      docInfo.parentNode!.insertBefore(statusBar, docInfo)
-    }
+    let vimStatus: HTMLElement | undefined
+
+    const VimStatus = ctx.lib.vue.defineComponent({
+      name: 'vim-status',
+      setup () {
+        const { h, ref, onMounted, watchEffect } = ctx.lib.vue
+        const refStatusBar = ref<HTMLElement>()
+
+        watchEffect(() => {
+          vimStatus = refStatusBar.value
+        }, { flush: 'post' })
+
+        onMounted(() => {
+          if (openVim.value) {
+            loadVimPlugin()
+          }
+        })
+
+        return () => h('div', {
+          ref: refStatusBar,
+          class: 'vim-status',
+          style: { padding: '0 5px' },
+        })
+      },
+    })
 
     const loadVimPlugin = () => {
-      statusBar.style.display = 'inline-block'
+      if (!vimStatus) return
+
       const editor = ctx.editor.getEditor()
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       require(['monaco-vim'], function (MonacoVim) {
-        vimMode = MonacoVim.initVimMode(editor, statusBar)
+        vimMode = MonacoVim.initVimMode(editor, vimStatus)
       })
     }
 
-    if (openVim) {
-      loadVimPlugin()
-    }
+    ctx.lib.vue.watch(openVim, (val) => {
+      if (val) {
+        loadVimPlugin()
+        window.localStorage.removeItem('closeVim')
+      } else {
+        vimMode?.dispose()
+        window.localStorage.setItem('closeVim', '1')
+      }
 
-    const actionName = 'toggleVim'
+      ctx.statusBar.refreshMenu()
+    })
+
+    const actionName = __EXTENSION_ID__ + '.toggleVim'
 
     ctx.action.registerAction({
       name: actionName,
       keys: [ctx.command.CtrlCmd, ctx.command.Alt, 'v'],
       handler: () => {
-        openVim = !openVim
-        ctx.statusBar.refreshMenu()
-        if (openVim) {
-          loadVimPlugin()
-          window.localStorage.removeItem('closeVim')
-        } else if (vimMode) {
-          vimMode.dispose()
-          window.localStorage.setItem('closeVim', '1')
-        }
+        openVim.value = !openVim.value
       },
       when: () => ctx.store.state.showEditor
     })
@@ -62,10 +79,21 @@ registerPlugin({
         id: __EXTENSION_ID__,
         type: 'normal',
         title: 'Vim 模式',
-        checked: openVim,
+        checked: openVim.value,
         subTitle: ctx.command.getKeysLabel(actionName),
         onClick: () => ctx.action.getActionHandler(actionName)()
       })
+    })
+
+    ctx.statusBar.tapMenus(menus => {
+      const id = __EXTENSION_ID__ + '-vim'
+      menus[id] = {
+        id,
+        title: VimStatus,
+        order: -2048,
+        position: 'right',
+        hidden: !openVim.value
+      }
     })
   }
 })

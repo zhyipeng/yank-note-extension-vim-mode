@@ -64,10 +64,17 @@ registerPlugin({
     })
 
     const actionName = __EXTENSION_ID__ + '.toggleVim'
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    const { CtrlCmd, Alt, getKeysLabel } = ctx.keybinding || ctx.command // 3.58.0 之前的版本使用 ctx.command
 
     ctx.action.registerAction({
       name: actionName,
-      keys: [ctx.command.CtrlCmd, ctx.command.Alt, 'v'],
+      keys: [CtrlCmd, Alt, 'v'],
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      forUser: true, // 用户可以自定义快捷键
+      description: '切换 Vim 模式',
       handler: () => {
         openVim.value = !openVim.value
       },
@@ -80,7 +87,7 @@ registerPlugin({
         type: 'normal',
         title: 'Vim 模式',
         checked: openVim.value,
-        subTitle: ctx.command.getKeysLabel(actionName),
+        subTitle: getKeysLabel(actionName),
         onClick: () => ctx.action.getActionHandler(actionName)()
       })
     })

@@ -63,7 +63,7 @@ registerPlugin({
       ctx.statusBar.refreshMenu()
     })
 
-    const actionName = __EXTENSION_ID__ + '.toggleVim'
+    const actionName = __EXTENSION_ID__ + '.toggle-vim'
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { CtrlCmd, Alt, getKeysLabel } = ctx.keybinding || ctx.command // 3.58.0 之前的版本使用 ctx.command
@@ -102,5 +102,18 @@ registerPlugin({
         hidden: !openVim.value
       }
     })
+
+    ctx.theme.addStyles(`
+      .status-bar-menu .vim-status span {
+        display: inline-flex;
+        color: #eee;
+      }
+
+      .status-bar-menu .vim-status span input {
+        font-size: 14px !important;
+        padding: 0 !important;
+        color: #eee !important;
+      }
+    `)
   }
 })

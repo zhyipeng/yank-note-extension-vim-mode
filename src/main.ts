@@ -63,7 +63,7 @@ registerPlugin({
       ctx.statusBar.refreshMenu()
     })
 
-    const actionName = __EXTENSION_ID__ + '.toggleVim'
+    const actionName = __EXTENSION_ID__ + '.toggle-vim'
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { CtrlCmd, Alt, getKeysLabel } = ctx.keybinding || ctx.command // 3.58.0 之前的版本使用 ctx.command

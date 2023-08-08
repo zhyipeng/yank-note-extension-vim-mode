@@ -102,5 +102,18 @@ registerPlugin({
         hidden: !openVim.value
       }
     })
+
+    ctx.theme.addStyles(`
+      .status-bar-menu .vim-status span {
+        display: inline-flex;
+        color: #eee;
+      }
+
+      .status-bar-menu .vim-status span input {
+        font-size: 14px !important;
+        padding: 0 !important;
+        color: #eee !important;
+      }
+    `)
   }
 })

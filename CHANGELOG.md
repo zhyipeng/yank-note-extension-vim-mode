@@ -1,3 +1,12 @@
+## [1.0.6](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.5...v1.0.6) (2023-08-08)
+
+
+### Features
+
+* 适配 Yank Note 3.58.0 版本 ([204833b](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/204833bc919e8519a17c5351c142f5dc635a1d74))
+
+
+
 ## [1.0.5](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.4...v1.0.5) (2022-09-10)
 
 

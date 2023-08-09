@@ -1,3 +1,13 @@
+## [1.0.7](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.6...v1.0.7) (2023-08-09)
+
+
+### Features
+
+* 展示出命令输入框 ([fd58c7a](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/fd58c7a09d701ef67e2198ba77c2959fec734eff))
+* 调整 action 名字 ([52f890a](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/52f890a8f4e33b1ca31ab7f2b1e1b3bb2718f3d6))
+
+
+
 ## [1.0.6](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.5...v1.0.6) (2023-08-08)
 
 

@@ -1,4 +1,22 @@
-import { getExtensionBasePath, registerPlugin } from '@yank-note/runtime-api'
+import { Ctx, getExtensionBasePath, registerPlugin } from '@yank-note/runtime-api'
+import ActionList from '@/components/ActionList.vue'
+import { closeTab } from '@/utils'
+
+interface KM {
+  type: 'action' | 'key',
+  before: string,
+  after: string,
+  context?: 'normal' | 'insert' | 'visual',
+}
+
+function showActionlist (ctx: Ctx) {
+  ctx.ui.useModal().alert({
+    title: 'Action List',
+    component: ActionList
+  })
+}
+
+const VIM_KEYMAPS_SETTING = 'vim.keymaps'
 
 registerPlugin({
   name: __EXTENSION_ID__,
@@ -6,7 +24,6 @@ registerPlugin({
     const openVim = ctx.lib.vue.ref(!window.localStorage.getItem('closeVim'))
     let vimMode: any = null
 
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     require.config({
       paths: {
@@ -44,10 +61,52 @@ registerPlugin({
       if (!vimStatus) return
 
       const editor = ctx.editor.getEditor()
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       require(['monaco-vim'], function (MonacoVim) {
         vimMode = MonacoVim.initVimMode(editor, vimStatus)
+        // set ex command
+        MonacoVim.VimMode.Vim.defineEx('quit', 'q', () => closeTab(ctx))
+        MonacoVim.VimMode.Vim.defineEx('wq_save_and_quit', 'wq', () => {
+          // @ts-ignore
+          ctx.editor.triggerSave()
+          setTimeout(() => closeTab(ctx), 200)
+        })
+        // @ts-ignore
+        MonacoVim.VimMode.Vim.defineEx('write', 'w', () => ctx.editor.triggerSave())
+
+        MonacoVim.VimMode.Vim.defineEx('actionlist', 'actionlist', () => {
+          showActionlist(ctx)
+        })
+
+        // load keymaps
+        const keymaps = ctx.setting.getSetting<KM[]>(VIM_KEYMAPS_SETTING, [])
+        keymaps.forEach((item) => {
+          switch (item.type) {
+            case 'action':
+              MonacoVim.VimMode.Vim.defineAction(`yn.${item.after}`, () => {
+                const action = ctx.action.getAction(item.after)
+                if (action) {
+                  action.handler()
+                } else {
+                  try {
+                    editor.trigger(null, item.after, undefined)
+                  } catch (e) {
+                    console.debug(e)
+                  }
+                }
+              })
+              MonacoVim.VimMode.Vim.mapCommand(item.before, 'action', `yn.${item.after}`)
+              break
+            case 'key':
+              MonacoVim.VimMode.Vim._mapCommand({
+                keys: item.before,
+                type: 'keyToKey',
+                toKeys: item.after,
+                context: item.context,
+              })
+              break
+          }
+        })
       })
     }
 
@@ -64,14 +123,12 @@ registerPlugin({
     })
 
     const actionName = __EXTENSION_ID__ + '.toggle-vim'
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const { CtrlCmd, Alt, getKeysLabel } = ctx.keybinding || ctx.command // 3.58.0 之前的版本使用 ctx.command
 
     ctx.action.registerAction({
       name: actionName,
       keys: [CtrlCmd, Alt, 'v'],
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       forUser: true, // 用户可以自定义快捷键
       description: '切换 Vim 模式',

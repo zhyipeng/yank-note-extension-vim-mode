@@ -11,7 +11,7 @@ export default defineConfig({
   base: path.join(getExtensionBasePath(process.env.npm_package_name), OUT_DIR).replace(/\\/g, '/'),
   plugins: [vue(), copy({
     targets: [
-      { src: 'node_modules/monaco-vim/dist/monaco-vim.js', dest: 'dist' },
+      { src: 'lib/monaco-vim.js', dest: 'dist' },
     ],
     hook: 'writeBundle',
   })],

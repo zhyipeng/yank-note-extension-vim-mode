@@ -1,3 +1,12 @@
+## [1.0.8](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.7...v1.0.8) (2023-08-17)
+
+
+### Features
+
+* 支持keymaps ([de27cba](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/de27cbaadaa4536d4b2ada615289205851fe7032))
+
+
+
 ## [1.0.7](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.6...v1.0.7) (2023-08-09)
 
 

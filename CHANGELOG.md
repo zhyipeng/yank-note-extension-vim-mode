@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.8...v1.1.0) (2023-08-17)
+
+
+### Bug Fixes
+
+* upgrade yn engine ([e0ab755](https://github.com/zhyipeng/yank-note-extension-vim-mode/commit/e0ab755ace0a163bf9ad9bb70ce2232679e51879))
+
+
+
 ## [1.0.8](https://github.com/zhyipeng/yank-note-extension-vim-mode/compare/v1.0.7...v1.0.8) (2023-08-17)
 
 

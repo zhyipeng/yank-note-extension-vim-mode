@@ -1,8 +1,7 @@
 import { Ctx } from '@yank-note/runtime-api'
 
 export function getActions (ctx: Ctx) {
-  // @ts-ignore
-  const ynActions: string[] = ctx.action.getRawActions().map(item => item.name)
+  const ynActions: string[] = ctx.action.getRawActions().filter(item => item.forUser).map(item => item.name)
   // @ts-ignore
   const editorActions: string[] = Array.from(ctx.editor.getEditor()._actions.keys())
   return {
@@ -12,8 +11,5 @@ export function getActions (ctx: Ctx) {
 }
 
 export function closeTab (ctx: Ctx) {
-  const action = ctx.action.getAction('file-tabs.close-current')
-  if (action) {
-    action.handler()
-  }
+  ctx.action.getActionHandler('file-tabs.close-current')()
 }

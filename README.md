@@ -83,6 +83,8 @@ exp:
 - editor: `ctx.editor.getEditor()._actions`
 - vim 指令: `:actionlist`
 
+> 修改配置文件后需要重载页面或重启yn生效
+
 ## 关于 Vim
 - [Vim](https://www.vim.org/)
 - [Vim 从入门到精通](https://github.com/wsdjeg/vim-galore-zh_cn)
